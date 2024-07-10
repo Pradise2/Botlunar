@@ -21,7 +21,7 @@ bot.start(async (ctx) => {
     const userName = user.username ? `@${user.username.replace(/[-.!]/g, '\\$&')}` : user.first_name;
 
     const messageText = `
-*Hey, ${userName}* Prepare for an out-of-this-world adventure! 🌌🚀.
+*Hey, ${userName}* Prepare for an out-of-this-world adventure! 🚀.
 
       TheLunarCoin Power Tap mini-game has just landed on Telegram, and it’s going to be epic!
 
