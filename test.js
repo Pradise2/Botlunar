@@ -21,27 +21,28 @@ bot.start(async (ctx) => {
     const userName = user.username ? `@${user.username.replace(/[-.!]/g, '\\$&')}` : user.first_name;
 
     const messageText = `
-*Hey, ${userName}* Prepare for an out-of-this-world adventure! 🚀.
+*Welcome 🎉, ${userName}* Future Astronaut!.
 
-      TheLunarCoin Power Tap mini-game has just landed on Telegram, and it’s going to be epic!
+You are ready to explore the Moon like never before! 🚀
 
-⚡ Get ready to be hooked! ⚡.
+🤩Lunar tap-to-earn game has just touched down on Telegram! Get set to be amazed! 🤩
 
-🤑 Farm tokens, conquer challenges, and score insane loot.
+🤑 Earn Lunar tokens, tackle epic challenges, and uncover incredible rewards. 
 
-💥 Form squads and invite your crew for double the fun (and double the tokens)!.
+🔗 Team up for greater glory! Invite your friends to double the fun and double the tokens! 
 
-   With TheLunarCoin, mastering cryptocurrency is a breeze. From wallets to trading, earning, and cards, we’ve got everything you need to dominate the cryptoverse!
+🌔 Lunar isn't just a game, it's your gateway to building a thriving lunar colony. 
 
-🚀 Let the lunar adventure begin! 🚀
+🧠 Strategize, 🌍 explore, and 💰 earn all from your Telegram app.
 
-* Lunar Token is not a virtual currency.*
-    `;
+*🚀Your Lunar adventure starts now!🚀*
+        `;
 
     await ctx.replyWithMarkdown(messageText, {
       reply_markup: {
         inline_keyboard: [
-          [{ text: "Start Now", web_app: { url: urlSent } }]
+          [{ text: "🎮 Play Now", web_app: { url: urlSent } },
+          { text: "Join Community", web_app: { url: urlSent  } }]
         ]
       },
     });
