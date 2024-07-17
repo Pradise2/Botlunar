@@ -10,6 +10,7 @@ const token = process.env.TOKEN || '7233165030:AAEl_z6x1v9zvGcpMf1TQbpr390_j7SIH
 const bot = new Telegraf(token);
 // Web App Link
 const web_link = 'https://thelunarcoin.vercel.app/';
+const telegram_link = 'https://t.me/lunarcoincommunity';
 
 // Start Handler
 bot.start(async (ctx) => {
@@ -42,7 +43,7 @@ You are ready to explore the Moon like never before! 🚀
       reply_markup: {
         inline_keyboard: [
           [{ text: "🎮 Play Now", web_app: { url: urlSent } },
-          { text: "Join Community", web_app: { url: urlSent  } }]
+          { text: "Join Community", web_app: { url: telegram_link  } }]
         ]
       },
     });
