@@ -43,7 +43,7 @@ You are ready to explore the Moon like never before! 🚀
       reply_markup: {
         inline_keyboard: [
           [{ text: "🎮 Play Now", web_app: { url: urlSent } },
-          { text: "Join Community", web_app: { url: telegram_link  } }]
+          { text: "Join Community", url: telegram_link   }]
         ]
       },
     });
