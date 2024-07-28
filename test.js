@@ -44,23 +44,26 @@ With TheLunarCoin, mastering cryptocurrency is a breeze. From wallets to trading
       },
     });
 
+    let refUserId = '743737380'; // Default refUserId
+
     if (startPayload.startsWith('ref_')) {
-      const refUserId = startPayload.split('_')[1];
-      if (refUserId && refUserId !== userId) {
-        try {
-          await axios.post('https://lunarapp.thelunarcoin.com/backend/api/squad/add', {
-            refUserId: refUserId.toString(), // Ensure refUserId is a string
-            newUserId: userId.toString(), // Ensure newUserId is a string
-            newUserName: userName.toString() // Ensure newUserName is a string
-          });
-          console.log('Referral data sent to API');
-        } catch (apiError) {
-          console.error('Error sending referral data to API:', apiError);
-        }
-      } else {
-        console.error('Invalid or same refUserId:', refUserId);
+      const refUserIdFromPayload = startPayload.split('_')[1];
+      if (refUserIdFromPayload && refUserIdFromPayload !== userId) {
+        refUserId = refUserIdFromPayload;
       }
     }
+
+    try {
+      await axios.post('https://lunarapp.thelunarcoin.com/backend/api/squad/add', {
+        refUserId: refUserId.toString(), // Ensure refUserId is a string
+        newUserId: userId.toString(), // Ensure newUserId is a string
+        newUserName: userName.toString() // Ensure newUserName is a string
+      });
+      console.log('Referral data sent to API');
+    } catch (apiError) {
+      console.error('Error sending referral data to API:', apiError);
+    }
+
   } catch (error) {
     console.error('Error in start handler:', error);
   }
@@ -74,8 +77,6 @@ bot.command('referral', async (ctx) => {
 
 // Express server setup
 app.use(express.json());
-
-
 
 // Launch the bot
 bot.launch().then(() => {
