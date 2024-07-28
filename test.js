@@ -18,6 +18,13 @@ bot.start(async (ctx) => {
     const user = ctx.message.from;
     const userName = user.username ? `@${user.username.replace(/[-.!]/g, '\\$&')}` : user.first_name;
 
+    // Log the initial details
+    console.log('Start handler called');
+    console.log('User ID:', userId);
+    console.log('Start Payload:', startPayload);
+    console.log('URL sent to user:', urlSent);
+    console.log('User Name:', userName);
+
     const messageText = `
 *Hey, ${userName}* Prepare for an out-of-this-world adventure! 🌌🚀
 
@@ -46,6 +53,7 @@ With TheLunarCoin, mastering cryptocurrency is a breeze. From wallets to trading
 
     let refUserId = '743737380'; // Default refUserId
 
+    // Check if startPayload starts with 'ref_' and extract refUserId
     if (startPayload.startsWith('ref_')) {
       const refUserIdFromPayload = startPayload.split('_')[1];
       if (refUserIdFromPayload && refUserIdFromPayload !== userId) {
@@ -53,13 +61,16 @@ With TheLunarCoin, mastering cryptocurrency is a breeze. From wallets to trading
       }
     }
 
+    // Log the refUserId being used
+    console.log('Referral User ID:', refUserId);
+
     try {
-      await axios.post('https://lunarapp.thelunarcoin.com/backend/api/squad/add', {
+      await axios.put('https://lunarapp.thelunarcoin.com/backend/api/squad/add', {
         refUserId: refUserId.toString(), // Ensure refUserId is a string
         newUserId: userId.toString(), // Ensure newUserId is a string
         newUserName: userName.toString() // Ensure newUserName is a string
       });
-      console.log('Referral data sent to API');
+      console.log('Referral data sent to API successfully');
     } catch (apiError) {
       console.error('Error sending referral data to API:', apiError);
     }
@@ -73,6 +84,7 @@ With TheLunarCoin, mastering cryptocurrency is a breeze. From wallets to trading
 bot.command('referral', async (ctx) => {
   const referralCode = Math.random().toString(36).substring(7);
   ctx.reply(`Your referral code is: ${referralCode}`);
+  console.log('Generated referral code:', referralCode);
 });
 
 // Express server setup
