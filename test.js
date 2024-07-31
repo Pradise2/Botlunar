@@ -48,7 +48,7 @@ bot.start(async (ctx) => {
       const refUserId = startPayload.split('_')[1];
       if (refUserId && refUserId !== userId) {
         try {
-          await axios.post('https://lunarapp.thelunarcoin.com/backend/api/squad/add', {
+          await axios.put('https://lunarapp.thelunarcoin.com/backend/api/squad/add', {
             refUserId: refUserId.toString(), // Ensure refUserId is a string
             newUserId: userId.toString(), // Ensure newUserId is a string
             newUserName: userName.toString() // Ensure newUserName is a string
