@@ -7,7 +7,7 @@ const token = process.env.TOKEN || '7233165030:AAEO2yudL-ypxo3k3Z1fyxeld25XeS39J
 const bot = new Telegraf(token);
 
 // Web App Link
-const web_link = 'https://thelunarcoin.vercel.app';
+const web_link = 'https://lunarcoin.vercel.app';
 
 const Telegram = 'https://t.me/lunarcoincommunity';
 // Start Handler
