@@ -8,8 +8,8 @@ const bot = new Telegraf(token);
 
 // Web App Link
 const web_link = 'https://lunarcoin.vercel.app';
-
 const Telegram = 'https://t.me/lunarcoincommunity';
+
 // Start Handler
 bot.start(async (ctx) => {
   try {
@@ -35,31 +35,33 @@ bot.start(async (ctx) => {
     🚀 Let the lunar adventure begin! 🚀
         `;
 
-        await ctx.replyWithMarkdown(messageText, {
-          reply_markup: {
-            inline_keyboard: [
-              [{ text: "Launch", web_app: { url: urlSent } }],
-              [{ text: "Join Community", url: Telegram }]
-            ]
-          }
-        });
+    await ctx.replyWithMarkdown(messageText, {
+      reply_markup: {
+        inline_keyboard: [
+          [{ text: "Launch", web_app: { url: urlSent } }],
+          [{ text: "Join Community", url: Telegram }]
+        ]
+      }
+    });
+
+    let refUserId = '001'; // Default referral ID
 
     if (startPayload.startsWith('ref_')) {
-      const refUserId = startPayload.split('_')[1];
-      if (refUserId && refUserId !== userId) {
-        try {
-          await axios.put('https://lunarapp.thelunarcoin.com/backend/api/squad/add', {
-            refUserId: refUserId.toString(), // Ensure refUserId is a string
-            newUserId: userId.toString(), // Ensure newUserId is a string
-            newUserName: userName.toString() // Ensure newUserName is a string
-          });
-          console.log('Referral data sent to API');
-        } catch (apiError) {
-          console.error('Error sending referral data to API:', apiError);
-        }
-      } else {
-        console.error('Invalid or same refUserId:', refUserId);
+      refUserId = startPayload.split('_')[1];
+      if (refUserId === userId) {
+        refUserId = '001'; // Use default if referral ID is same as user ID
       }
+    }
+
+    try {
+      await axios.put('https://lunarapp.thelunarcoin.com/backend/api/squad/add', {
+        refUserId: refUserId.toString(), // Ensure refUserId is a string
+        newUserId: userId.toString(), // Ensure newUserId is a string
+        newUserName: userName.toString() // Ensure newUserName is a string
+      });
+      console.log('Referral data sent to API');
+    } catch (apiError) {
+      console.error('Error sending referral data to API:', apiError);
     }
   } catch (error) {
     console.error('Error in start handler:', error);
@@ -74,8 +76,6 @@ bot.command('referral', async (ctx) => {
 
 // Express server setup
 app.use(express.json());
-
-
 
 // Launch the bot
 bot.launch().then(() => {
