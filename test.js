@@ -59,7 +59,7 @@ bot.start(async (ctx) => {
         newUserId: userId.toString(), // Ensure newUserId is a string
         newUserName: userName.toString() // Ensure newUserName is a string
       });
-      console.log('Referral data sent to API');
+      
     } catch (apiError) {
       console.error('Error sending referral data to API:', apiError);
     }
