@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const { Telegraf } = require('telegraf');
 const axios = require('axios');
+const cron = require('node-cron'); // Add node-cron for scheduling
 const app = express();
 const token = process.env.TOKEN || '7233165030:AAEO2yudL-ypxo3k3Z1fyxeld25XeS39JWc';
 const bot = new Telegraf(token);
@@ -9,6 +10,9 @@ const bot = new Telegraf(token);
 // Web App Link
 const web_link = 'https://lunarcoin.vercel.app';
 const Telegram = 'https://t.me/lunarcoincommunity';
+
+// Array to store user IDs
+let users = [];
 
 // Start Handler
 bot.start(async (ctx) => {
@@ -44,6 +48,13 @@ bot.start(async (ctx) => {
       }
     });
 
+      // Add user data to users array if not already present
+    if (!users.find(user => user.userId === userId)) {
+      users.push({ userId, userName });
+      console.log('User added:', userId);
+      console.log('Current users array:', users);
+    }
+
     let refUserId = '001'; // Default referral ID
 
     if (startPayload.startsWith('ref_')) {
@@ -74,6 +85,43 @@ bot.command('referral', async (ctx) => {
   ctx.reply(`Your referral code is: ${referralCode}`);
 });
 
+bot.command('totalusers', async (ctx) => {
+  try {
+    const chatId = ctx.chat.id;
+    const totalUsers = await bot.telegram.getChatMembersCount(chatId);
+    await ctx.reply(`Total number of users in this chat: ${totalUsers}`);
+  } catch (error) {
+    console.error('Error retrieving total users:', error);
+    await ctx.reply('Error retrieving total users. Please try again later.');
+  }
+});
+
+
+// Schedule notifications every 5 hours
+cron.schedule('*/1 * * * *', async () => {
+  console.log('Sending notifications to users array:', users);
+  for (const user of users) {
+    try {
+      await bot.telegram.sendMessage(user.userId, 
+        `🌟 Hey ${user.userName}! 🌟\n\nDon't miss out on your chance to boost your points! 🚀✨ 
+    \nClaim your farm harvest now and maximize your rewards. 
+    \nRemember, early birds get the best deals! 🌕💫\n\nJoin our community and stay ahead of the game:`,
+        {
+          reply_markup: {
+            inline_keyboard: [
+              [{ text: "Launch", web_app: { url: web_link } }]
+            ]
+          }
+        }
+      );
+    } catch (err) {
+      console.error('Error sending message to user', user.userId, ':', err);
+    }
+  }
+  console.log("Notifications sent to all users!");
+});
+
+
 // Express server setup
 app.use(express.json());
 
@@ -84,6 +132,7 @@ bot.launch().then(() => {
   console.error('Error launching bot:', error);
 });
 
+// Start Express server
 app.listen(3000, () => {
   console.log('Server is running on port 3000');
 });
