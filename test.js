@@ -98,7 +98,7 @@ bot.command('totalusers', async (ctx) => {
 
 
 // Schedule notifications every 5 hours
-cron.schedule('*/1 * * * *', async () => {
+cron.schedule('0 */5 * * *', async () => {
   console.log('Sending notifications to users array:', users);
   for (const user of users) {
     try {
